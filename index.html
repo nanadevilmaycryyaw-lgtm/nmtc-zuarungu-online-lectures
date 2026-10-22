@@ -214,7 +214,7 @@
             text-transform: uppercase;
         }
 
-        .status-badge.live { background-color: var(--live-bg); color: var(--live-text); }
+        .status-badge.offline { background-color: var(--offline-bg); color: var(--offline-text); }
         .status-badge.upcoming { background-color: var(--upcoming-bg); color: var(--upcoming-text); }
         .status-badge.offline { background-color: var(--offline-bg); color: var(--offline-text); }
 
@@ -270,12 +270,12 @@
             transition: background-color 0.2s;
         }
 
-        .btn-join.live-btn {
+        .btn-join.offline-btn {
             background-color: var(--primary-green);
             color: #ffffff;
         }
 
-        .btn-join.live-btn:hover {
+        .btn-join.offline-btn:hover {
             background-color: var(--secondary-green);
         }
 
@@ -385,15 +385,15 @@
                     var buttonClass = 'disabled-btn';
                     var buttonText = 'Session Inactive';
 
-                    if (course.status === 'live') {
-                        badgeClass = 'live';
-                        badgeText = '🔴 Live Now';
-                        buttonClass = 'live-btn';
+                    if (course.status === 'offline') {
+                        badgeClass = 'offline';
+                        badgeText = 'offline';
+                        buttonClass = 'offline-btn';
                         buttonText = '🎥 Join Google Meet Class';
                     } else if (course.status === 'upcoming') {
                         badgeClass = 'upcoming';
                         badgeText = '⏰ Starts Soon';
-                        buttonClass = 'live-btn';
+                        buttonClass = 'offline-btn';
                         buttonText = '🎥 Open Google Meet Room';
                     }
 
