@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMTC Zuarungu - Top-Up Programmes Online Lecture Portal</title>
+    <style>
+        :root {
+            --primary-green: #0d5c3a;
+            --secondary-green: #148052;
+            --accent-gold: #f4b41a;
+            --bg-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --live-bg: #fee2e2;
+            --live-text: #991b1b;
+            --upcoming-bg: #fef3c7;
+            --upcoming-text: #92400e;
+            --offline-bg: #f1f5f9;
+            --offline-text: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .announcement-bar {
+            background-color: var(--accent-gold);
+            color: #1e293b;
+            padding: 10px 16px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-align: center;
+            border-bottom: 2px solid #d99b00;
+        }
+
+        header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 24px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand-info h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .brand-info p {
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 2px;
+        }
+
+        .badge-portal {
+            background-color: var(--secondary-green);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .notice-card {
+            background-color: #e6f4ea;
+            border-left: 5px solid var(--primary-green);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.94rem;
+            color: #0c4a2d;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .controls-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            padding: 18px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.92rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-filter.active, .btn-filter:hover {
+            background-color: var(--primary-green);
+            color: #ffffff;
+            border-color: var(--primary-green);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .course-code {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            background: #e8f5e9;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge.live { background-color: var(--live-bg); color: var(--live-text); }
+        .status-badge.upcoming { background-color: var(--upcoming-bg); color: var(--upcoming-text); }
+        .status-badge.offline { background-color: var(--offline-bg); color: var(--offline-text); }
+
+        .course-title {
+            font-size: 1.12rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+            line-height: 1.35;
+        }
+
+        .meta-info {
+            margin-bottom: 16px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .block-dates {
+            background: #f8fafc;
+            border: 1px dashed var(--border-color);
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            color: #334155;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-join {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 11px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-join.live-btn {
+            background-color: var(--primary-green);
+            color: #ffffff;
+        }
+
+        .btn-join.live-btn:hover {
+            background-color: var(--secondary-green);
+        }
+
+        .btn-join.disabled-btn {
+            background-color: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        footer {
+            margin-top: 50px;
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 0.85rem;
+        }
+
+        footer strong {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="announcement-bar">
+        📢 Notice: All online times are in GMT. Weekday lectures are conducted ONLINE via Google Meet. Weekend sessions (Sat/Sun) are Face-to-Face on campus.
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="brand-info">
+                <h1>NURSING & MIDWIFERY TRAINING COLLEGE, ZUARUNGU</h1>
+                <p>Top-Up Programmes Central Google Meet Online Portal</p>
+            </div>
+            <div class="badge-portal">
+                🎓 First Semester 2026/2027
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="notice-card">
+            <strong>Top-Up Students Guidance:</strong> Select your programme level below or search for your course title to locate your virtual classroom link. Click "Join Google Meet Class" to enter the lecturer's session. All session times are formatted in <strong>GMT</strong>.
+        </div>
+
+        <div class="controls-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search course code, module title, or lecturer name...">
+            </div>
+            <div class="filter-buttons">
+                <button class="btn-filter active" id="filter-all">All Courses</button>
+                <button class="btn-filter" id="filter-200">BSc Level 200 (NAC/NAP)</button>
+                <button class="btn-filter" id="filter-300">BSc Level 300 (Diploma)</button>
+            </div>
+        </div>
+
+        <div class="cards-grid" id="courseGrid"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>Nursing and Midwifery Training College, Zuarungu (NMTC Zuarungu)</strong>. All Rights Reserved.</p>
+        <p style="margin-top: 4px;">IT Department | Centralized Google Meet Routing System</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var courses = [
+                // LEVEL 200 TOP UP (NAC/NAP)
+                { id: 1, code: "ZAN 201", title: "Advanced Clinical Nursing I", tutor: "Mr. Ebenezer Asore Baba", level: "Level 200", block: "Block 1 (2 Wks): 26 Oct - 8 Nov 2026", time: "15:00 - 17:00 GMT", status: "upcoming", platform: "Google Meet", link: "https://meet.google.com/abc-defg-hij" },
+                { id: 2, code: "ZPA 203", title: "Principles & Practice of Health Assessment", tutor: "Mr. Albert Asuuri", level: "Level 200", block: "Block 1 (2 Wks): 26 Oct - 8 Nov 2026", time: "17:30 - 19:30 GMT", status: "upcoming", platform: "Google Meet", link: "https://meet.google.com/abc-defg-hij" },
+                { id: 3, code: "ZTC 205", title: "Therapeutic Communication", tutor: "Mr. Sharif Alhassan", level: "Level 200", block: "Block 2 (2 Wks): 9 Nov - 22 Nov 2026", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 4, code: "ZMI 207", title: "Microbiology & IPC", tutor: "Mr. Aliu Abdul-Rahman", level: "Level 200", block: "Block 2 (2 Wks): 9 Nov - 22 Nov 2026", time: "17:30 - 19:30 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 5, code: "ZMG 209", title: "Medical Genetics", tutor: "Mr. Donald Anuga", level: "Level 200", block: "Block 3 (2 Wks): 23 Nov - 6 Dec 2026", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 6, code: "ZTN 211", title: "Theoretical Foundations of Nursing", tutor: "Madam Regina Narkortu", level: "Level 200", block: "Block 3 (2 Wks): 23 Nov - 6 Dec 2026", time: "17:30 - 19:30 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 7, code: "ZTE 213", title: "Trauma and Emergency Nursing", tutor: "Mr. Tibil Francis", level: "Level 200", block: "Block 4 (1 Wk): 7 Dec - 13 Dec 2026", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 8, code: "ZZS 217", title: "Zuarungu Studies", tutor: "Part Time Lecturer", level: "Level 200", block: "Block 5 (2 Wks): 11 Jan - 24 Jan 2027", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 9, code: "ZLC 215", title: "Logic & Critical Thinking in Nursing", tutor: "Mr. Maurice / Mr. Sharif", level: "Level 200", block: "Block 5 (2 Wks): 11 Jan - 24 Jan 2027", time: "17:30 - 19:30 GMT", status: "offline", platform: "Google Meet", link: "#" },
+
+                // LEVEL 300 TOP UP (DIPLOMA)
+                { id: 10, code: "ZRM 301", title: "Research Methods in Nursing", tutor: "Mr. Francis Tibil", level: "Level 300", block: "Block 1 (2 Wks): 5 Oct - 18 Oct 2026", time: "15:00 - 17:00 GMT", status: "live", platform: "Google Meet", link: "https://meet.google.com/abc-defg-hij" },
+                { id: 11, code: "ZMM 303", title: "Medicine & Medical Nursing II", tutor: "Mr. Maurice Mikare", level: "Level 300", block: "Block 1 (2 Wks): 5 Oct - 18 Oct 2026", time: "17:30 - 19:30 GMT", status: "live", platform: "Google Meet", link: "https://meet.google.com/abc-defg-hij" },
+                { id: 12, code: "ZSS 305", title: "Surgery & Surgical Nursing II", tutor: "Mr. Raymond Natemyam", level: "Level 300", block: "Block 2 (2 Wks): 19 Oct - 1 Nov 2026", time: "15:00 - 17:00 GMT", status: "upcoming", platform: "Google Meet", link: "https://meet.google.com/abc-defg-hij" },
+                { id: 13, code: "ZPT 307", title: "Pharmacology & Therapeutics II", tutor: "Mr. Donald Anuga", level: "Level 300", block: "Block 2 (2 Wks): 19 Oct - 1 Nov 2026", time: "17:30 - 19:30 GMT", status: "upcoming", platform: "Google Meet", link: "https://meet.google.com/abc-defg-hij" },
+                { id: 14, code: "ZMB 309", title: "Medical Biostatistics", tutor: "Mr. Mubarik Abdulai", level: "Level 300", block: "Block 3 (2 Wks): 2 Nov - 15 Nov 2026", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 15, code: "ZON 311", title: "Obstetric Nursing", tutor: "Madam Regina Narkortu", level: "Level 300", block: "Block 3 (2 Wks): 2 Nov - 15 Nov 2026", time: "17:30 - 19:30 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 16, code: "ZCH 105", title: "Chemistry for Health Professionals", tutor: "Mr. Abdulai Mubarik", level: "Level 300", block: "Block 4 (2 Wks): 16 Nov - 29 Nov 2026", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 17, code: "ZCS 111", title: "Communication / Study Skills", tutor: "Part Time Lecturer", level: "Level 300", block: "Block 4 (2 Wks): 16 Nov - 29 Nov 2026", time: "17:30 - 19:30 GMT", status: "offline", platform: "Google Meet", link: "#" },
+                { id: 18, code: "ZGS 115", title: "Gender Studies", tutor: "Mr. Isaiah Delwin", level: "Level 300", block: "Block 5 (1 Wk): 30 Nov - 6 Dec 2026", time: "15:00 - 17:00 GMT", status: "offline", platform: "Google Meet", link: "#" }
+            ];
+
+            var currentFilter = 'all';
+
+            function renderCards(data) {
+                var container = document.getElementById('courseGrid');
+                container.innerHTML = '';
+
+                if (data.length === 0) {
+                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px; font-weight: 600;">No courses found matching your query.</p>';
+                    return;
+                }
+
+                data.forEach(function (course) {
+                    var badgeClass = 'offline';
+                    var badgeText = 'Scheduled';
+                    var buttonClass = 'disabled-btn';
+                    var buttonText = 'Session Inactive';
+
+                    if (course.status === 'live') {
+                        badgeClass = 'live';
+                        badgeText = '🔴 Live Now';
+                        buttonClass = 'live-btn';
+                        buttonText = '🎥 Join Google Meet Class';
+                    } else if (course.status === 'upcoming') {
+                        badgeClass = 'upcoming';
+                        badgeText = '⏰ Starts Soon';
+                        buttonClass = 'live-btn';
+                        buttonText = '🎥 Open Google Meet Room';
+                    }
+
+                    var cardHTML = 
+                        '<div class="card">' +
+                            '<div>' +
+                                '<div class="card-header">' +
+                                    '<span class="course-code">' + course.code + '</span>' +
+                                    '<span class="status-badge ' + badgeClass + '">' + badgeText + '</span>' +
+                                '</div>' +
+                                '<h2 class="course-title">' + course.title + '</h2>' +
+                                '<div class="meta-info">' +
+                                    '<div class="meta-item">👤 <strong>Tutor:</strong> ' + course.tutor + '</div>' +
+                                    '<div class="meta-item">🎓 <strong>Group:</strong> ' + course.level + '</div>' +
+                                    '<div class="meta-item">⏰ <strong>Time:</strong> ' + course.time + '</div>' +
+                                '</div>' +
+                                '<div class="block-dates">📅 ' + course.block + '</div>' +
+                            '</div>' +
+                            '<div class="card-footer">' +
+                                '<a href="' + course.link + '" target="_blank" class="btn-join ' + buttonClass + '">' + buttonText + '</a>' +
+                            '</div>' +
+                        '</div>';
+
+                    container.innerHTML += cardHTML;
+                });
+            }
+
+            function applyFilters() {
+                var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                var filtered = courses.filter(function (course) {
+                    var matchesSearch = course.title.toLowerCase().indexOf(searchTerm) !== -1 ||
+                                        course.code.toLowerCase().indexOf(searchTerm) !== -1 ||
+                                        course.tutor.toLowerCase().indexOf(searchTerm) !== -1;
+                    var matchesFilter = (currentFilter === 'all') || (course.level === currentFilter);
+                    return matchesSearch && matchesFilter;
+                });
+                renderCards(filtered);
+            }
+
+            document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+
+            document.getElementById('filter-all').addEventListener('click', function () {
+                currentFilter = 'all';
+                updateActiveButton(this);
+                applyFilters();
+            });
+
+            document.getElementById('filter-200').addEventListener('click', function () {
+                currentFilter = 'Level 200';
+                updateActiveButton(this);
+                applyFilters();
+            });
+
+            document.getElementById('filter-300').addEventListener('click', function () {
+                currentFilter = 'Level 300';
+                updateActiveButton(this);
+                applyFilters();
+            });
+
+            function updateActiveButton(activeBtn) {
+                var btns = document.querySelectorAll('.btn-filter');
+                btns.forEach(function (btn) { btn.classList.remove('active'); });
+                activeBtn.classList.add('active');
+            }
+
+            renderCards(courses);
+        });
+    </script>
+</body>
+</html>
